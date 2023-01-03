@@ -8,7 +8,8 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const Box = styled.TouchableOpacity`
+//const Box = styled.TouchableOpacity`
+const Box = styled.View`
   background-color: tomato;
   width: 200px;
   height: 200px;
@@ -21,7 +22,7 @@ const AnimatedBox1 = styled(Animated.createAnimatedComponent(TouchableOpacity))`
   height: 200px;
 `;
 
-// 방법 2. 생성된 styled 객체를 Animated화
+// 방법 2. 생성된 styled 객체를 Animated화 (TouchableOpacity를 Animated, 지금은 View로 바꾼상태)
 const AnimatedBox2 = Animated.createAnimatedComponent(Box);
 
 export default function App() {
@@ -30,16 +31,23 @@ export default function App() {
   // 2. value를 직접 set 하지 않는다.
   // 3. Animatable Components 에만 animation을 줄 수 있다.
   // 3-1. 그러나 필요하다면 createAnimatedComponent 메소드를 통해 만들 수 있다.
-  const moveUp = () => {};
+  const moveUp = () => {
+    Animated.spring(Y, {
+      toValue: 200,
+      bounciness: 15,
+      useNativeDriver: true, // bridge 사용 없이 native 로 애니메이션 정보를 보내게 된다 (Android, iOS)
+    }).start(); // React Component 에서 실행되지 않기 때문에 re-rendering 이 일어나지 않는다. 밖에서 console 찍어보면 Y 값은 그대로. addEventListener 하면 값 보임
+  };
 
   return (
     <Container>
-      <AnimatedBox2
-        onPress={moveUp}
-        style={{
-          transform: [{ translateY: Y }],
-        }}
-      />
+      <TouchableOpacity onPress={moveUp}>
+        <AnimatedBox2
+          style={{
+            transform: [{ translateY: Y }],
+          }}
+        />
+      </TouchableOpacity>
     </Container>
   );
 }
