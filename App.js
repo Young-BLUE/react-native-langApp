@@ -59,7 +59,7 @@ export default function App() {
     outputRange: ["rgb(255, 99, 71)", "rgb(71, 155, 255)"],
   });
 
-  POSITION.addListener(() => console.log(rotation));
+  POSITION.addListener(() => console.log(POSITION.getTranslateTransform()));
   return (
     <Container>
       <Pressable onPress={moveUp}>
@@ -67,7 +67,10 @@ export default function App() {
           style={{
             borderRadius,
             backgroundColor: bgColor,
-            transform: [{ rotateY: rotation }, { translateY: POSITION.y }],
+            transform: [
+              { rotateY: rotation },
+              ...POSITION.getTranslateTransform(),
+            ],
           }}
         />
       </Pressable>
