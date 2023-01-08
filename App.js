@@ -45,20 +45,21 @@ export default function App() {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true, // 입력 해줘야 event 감지해서 움직일 수 있음
+      onPanResponderGrant: () => {
+        POSITION.setOffset({
+          x: POSITION.x.__getValue(),
+          y: POSITION.y.__getValue(),
+        });
+      },
       onPanResponderMove: (evt, { dx, dy }) => {
         POSITION.setValue({
+          // 이전 위치를 더해서 set
           x: dx,
           y: dy,
         });
       },
       onPanResponderRelease: () => {
-        Animated.spring(POSITION, {
-          toValue: {
-            x: 0,
-            y: 0,
-          },
-          useNativeDriver: false,
-        }).start();
+        POSITION.flattenOffset(); // 터치가 끝날 때 offset을 초기화 시켜주면서 offset의 값을 넘겨준다
       },
     })
   ).current;
