@@ -44,7 +44,6 @@ export default function App() {
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, { dx }) => {
-        console.log(dx);
         position.setValue(dx);
       },
       onPanResponderGrant: () => onPressIn.start(),
