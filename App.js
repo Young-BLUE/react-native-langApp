@@ -64,12 +64,14 @@ export default function App() {
   });
   const goLeft = Animated.spring(position, {
     toValue: -500,
-    tension: 10, // 넘어가는 속도 조절
+    tension: 5, // 넘어가는 속도 조절
     useNativeDriver: true,
+    restSpeedThreshold: 100,
+    restDisplacementThreshold: 100,
   });
   const goRight = Animated.spring(position, {
     toValue: 500,
-    tension: 10,
+    tension: 5,
     useNativeDriver: true,
   });
   const panResponder = useRef(
