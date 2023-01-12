@@ -110,7 +110,7 @@ export default function App() {
               easing: Easing.linear,
               useNativeDriver: true,
             }),
-          ]).start();
+          ]).start(nextIcon);
         } else {
           Animated.parallel([onPressOut, goHome]).start();
         }
@@ -119,7 +119,21 @@ export default function App() {
   ).current;
 
   // State
-
+  const [index, setIndex] = useState(0);
+  const nextIcon = () => {
+    // Word 안에 넣어 처리한 scale 0 과 opacity 0 을 1로 돌려준다
+    Animated.parallel([
+      Animated.spring(scale, {
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+      Animated.spring(opacity, {
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    setIndex((prev) => prev + 1);
+  };
   return (
     <Wrapper>
       <Container>
@@ -140,7 +154,7 @@ export default function App() {
               transform: [...position.getTranslateTransform(), { scale }],
             }}
           >
-            <Ionicons name={"beer"} color={GREY} size={80} />
+            <Ionicons name={icons[index]} color={GREY} size={80} />
           </IconCard>
         </Center>
         <Edge>
